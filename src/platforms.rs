@@ -101,7 +101,7 @@ pub fn _get_signatures() -> String {
     let mut signatures = String::new();
     unsafe {
         if PLATFORMS_PATH != "" {
-            let mut sig_file = File::open(PLATFORMS_PATH).expect("Unable to open signatures file!");
+            let mut sig_file = File::open(PLATFORMS_PATH.as_str()).expect("Unable to open signatures file!");
             sig_file
                 .read_to_string(&mut signatures)
                 .expect("Unable to read the signatures file!");

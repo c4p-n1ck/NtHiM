@@ -13,7 +13,7 @@ use platform_dirs::AppDirs;
 use std::fs::remove_file;
 use std::{path::Path, process::exit, string::String};
 
-static mut PLATFORMS_PATH: &str = "";
+static mut PLATFORMS_PATH: String = String::new();
 
 fn main() -> std::io::Result<()> {
     let app_dirs = AppDirs::new(Some("NtHiM"), true).unwrap();
@@ -50,15 +50,12 @@ fn main() -> std::io::Result<()> {
         }
         if args.is_present("platforms") {
             unsafe {
-                let platforms_path_from_arg = args.value_of("platforms").unwrap();
+                let platforms_path_from_arg = args.value_of("platforms").unwrap().clone();
                 if !Path::new(&platforms_path_from_arg).exists() {
                     println!("Passed platforms file('{}') does not exist!", &platforms_path_from_arg);
                     exit(1);
                 }
-                println!("TODO: Assign this to global variable PLATFORMS_PATH = '{}'", &platforms_path_from_arg);
-                // PLATFORMS_PATH = &platforms_path_from_arg; // {Line: 53} error[E0597]: `args` does not live long enough.
-                // borrowed value does not live long enough argument requires that `args` is borrowed for `'static`.
-                // `args` dropped {Line: 66} while still borrowed.
+                PLATFORMS_PATH = platforms_path_from_arg.to_string();
             }
         }
         _takeover(hosts, _threads);
